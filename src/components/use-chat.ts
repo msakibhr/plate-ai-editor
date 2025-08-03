@@ -20,11 +20,14 @@ export const useChat = () => {
     }
   };
 
+  // Add input state and setInput function
+  const [input, setInput] = React.useState('');
+
   const chat = useBaseChat({
     id: 'editor',
     // Mock the API response. Remove it when you implement the route /api/ai/command
-    fetch: async (input, init) => {
-      const res = await fetch(input, init);
+    fetch: async (inputArg, init) => {
+      const res = await fetch(inputArg, init);
 
       if (!res.ok) {
         let sample: 'markdown' | 'mdx' | null = null;
@@ -64,7 +67,8 @@ export const useChat = () => {
     ...options,
   });
 
-  return { ...chat, _abortFakeStream };
+  // Always return input and setInput, along with the rest of chat
+  return { ...chat, input, setInput, _abortFakeStream };
 };
 
 // Used for testing. Remove it after implementing useChat api.
